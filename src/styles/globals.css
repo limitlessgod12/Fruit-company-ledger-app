@@ -1,0 +1,15 @@
+@layer base {
+  ::selection {
+    background: rgba(56, 189, 248, 0.35);
+    color: #ffffff;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply rounded-3xl border border-white/10 bg-slate-900/70 shadow-glow backdrop-blur-xl;
+  }
+  .glass-panel {
+    @apply rounded-3xl border border-slate-700/60 bg-slate-950/80 shadow-xl backdrop-blur-xl;
+  }
+}
