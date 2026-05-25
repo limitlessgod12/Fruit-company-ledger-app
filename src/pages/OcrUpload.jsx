@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createWorker } from 'tesseract.js';
-import { parseOcrText } from '../utils/parseOcr.js';
+import { parseOcrText } from '../utils/parseOCR.js';
 import { downloadTextFile } from '../utils/export.js';
 import { saveParsedLedgerEntries } from '../utils/storage.js';
 
