@@ -10,6 +10,8 @@ function SalesEntry() {
   const [item, setItem] = useState('');
   const [quantity, setQuantity] = useState('');
   const [rate, setRate] = useState('');
+  const [transportCharges, setTransportCharges] = useState('');
+  const [labourCharges, setLabourCharges] = useState('');
   const [paymentMode, setPaymentMode] = useState('Cash');
   const [message, setMessage] = useState('');
   const { sales } = loadAllData();
@@ -17,6 +19,10 @@ function SalesEntry() {
   const total = useMemo(() => {
     return Number(quantity || 0) * Number(rate || 0);
   }, [quantity, rate]);
+
+  const finalTotal = useMemo(() => {
+    return total + Number(transportCharges || 0) + Number(labourCharges || 0);
+  }, [total, transportCharges, labourCharges]);
 
   const handleSave = () => {
     if (!customerName || !item || !quantity || !rate) {
@@ -30,6 +36,9 @@ function SalesEntry() {
       quantity,
       rate,
       total,
+      transportCharges,
+      labourCharges,
+      finalTotal,
       paymentMode,
       particulars: `${item} sale to ${customerName}`,
     };
@@ -39,6 +48,8 @@ function SalesEntry() {
     setItem('');
     setQuantity('');
     setRate('');
+    setTransportCharges('');
+    setLabourCharges('');
     setPaymentMode('Cash');
   };
 
@@ -48,7 +59,7 @@ function SalesEntry() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h2 className="text-2xl font-semibold text-slate-100">Sales Entry</h2>
-            <p className="mt-2 text-sm text-slate-400">Record customer sales, quantity, rates, and payment mode for daily revenue tracking.</p>
+            <p className="mt-2 text-sm text-slate-400">Record customer sales with quantity, rates, transport, labour charges and payment mode for daily revenue tracking.</p>
           </div>
           <div className="rounded-3xl bg-slate-900/80 px-5 py-3 text-sm text-slate-200">
             Total sales records: {sales.length}
@@ -95,6 +106,26 @@ function SalesEntry() {
             />
           </label>
           <label className="space-y-2 text-sm text-slate-200">
+            Transport Charges
+            <input
+              type="number"
+              value={transportCharges}
+              onChange={(e) => setTransportCharges(e.target.value)}
+              placeholder="Transport cost"
+              className="w-full rounded-3xl border border-slate-700/60 bg-slate-950/90 px-4 py-3 text-slate-100 outline-none focus:border-cyan-400"
+            />
+          </label>
+          <label className="space-y-2 text-sm text-slate-200">
+            Labour Charges
+            <input
+              type="number"
+              value={labourCharges}
+              onChange={(e) => setLabourCharges(e.target.value)}
+              placeholder="Labour cost"
+              className="w-full rounded-3xl border border-slate-700/60 bg-slate-950/90 px-4 py-3 text-slate-100 outline-none focus:border-cyan-400"
+            />
+          </label>
+          <label className="space-y-2 text-sm text-slate-200">
             Payment Mode
             <select
               value={paymentMode}
@@ -107,8 +138,12 @@ function SalesEntry() {
             </select>
           </label>
           <div className="space-y-2 text-sm text-slate-200">
-            <span>Total Amount</span>
+            <span>Base Amount</span>
             <div className="rounded-3xl border border-slate-700/60 bg-slate-950/90 px-4 py-3 text-slate-100">₹ {formatCurrency(total)}</div>
+          </div>
+          <div className="space-y-2 text-sm text-slate-200">
+            <span>Final Total</span>
+            <div className="rounded-3xl border border-slate-700/60 bg-slate-950/90 px-4 py-3 text-slate-100">₹ {formatCurrency(finalTotal)}</div>
           </div>
         </div>
 

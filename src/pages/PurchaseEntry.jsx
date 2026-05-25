@@ -10,8 +10,6 @@ function PurchaseEntry() {
   const [item, setItem] = useState('');
   const [quantity, setQuantity] = useState('');
   const [rate, setRate] = useState('');
-  const [transportCharges, setTransportCharges] = useState('');
-  const [labourCharges, setLabourCharges] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('Paid');
   const [message, setMessage] = useState('');
   const { purchases } = loadAllData();
@@ -21,10 +19,6 @@ function PurchaseEntry() {
     const price = Number(rate || 0);
     return qty * price;
   }, [quantity, rate]);
-
-  const finalCost = useMemo(() => {
-    return total + Number(transportCharges || 0) + Number(labourCharges || 0);
-  }, [total, transportCharges, labourCharges]);
 
   const handleSave = () => {
     if (!supplierName || !item || !quantity || !rate) {
@@ -38,9 +32,7 @@ function PurchaseEntry() {
       quantity,
       rate,
       total,
-      transportCharges,
-      labourCharges,
-      finalCost,
+      finalCost: total,
       paymentStatus,
       particulars: `${item} purchase from ${supplierName}`,
     };
@@ -50,8 +42,6 @@ function PurchaseEntry() {
     setItem('');
     setQuantity('');
     setRate('');
-    setTransportCharges('');
-    setLabourCharges('');
     setPaymentStatus('Paid');
   };
 
@@ -61,7 +51,7 @@ function PurchaseEntry() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h2 className="text-2xl font-semibold text-slate-100">Purchase Entry</h2>
-            <p className="mt-2 text-sm text-slate-400">Register supplier bills, transport, labour and payment status for mandi purchases.</p>
+            <p className="mt-2 text-sm text-slate-400">Register supplier bills and payment status for mandi purchases.</p>
           </div>
           <div className="rounded-3xl bg-slate-900/80 px-5 py-3 text-sm text-slate-200">
             Total saved purchases: {purchases.length}
@@ -107,26 +97,6 @@ function PurchaseEntry() {
             />
           </label>
           <label className="space-y-2 text-sm text-slate-200">
-            Transport Charges
-            <input
-              type="number"
-              value={transportCharges}
-              onChange={(e) => setTransportCharges(e.target.value)}
-              placeholder="Transport cost"
-              className="w-full rounded-3xl border border-slate-700/60 bg-slate-950/90 px-4 py-3 text-slate-100 outline-none focus:border-cyan-400"
-            />
-          </label>
-          <label className="space-y-2 text-sm text-slate-200">
-            Labour Charges
-            <input
-              type="number"
-              value={labourCharges}
-              onChange={(e) => setLabourCharges(e.target.value)}
-              placeholder="Labour cost"
-              className="w-full rounded-3xl border border-slate-700/60 bg-slate-950/90 px-4 py-3 text-slate-100 outline-none focus:border-cyan-400"
-            />
-          </label>
-          <label className="space-y-2 text-sm text-slate-200">
             Payment Status
             <select
               value={paymentStatus}
@@ -140,10 +110,6 @@ function PurchaseEntry() {
           <div className="space-y-2 text-sm text-slate-200">
             <span>Total</span>
             <div className="rounded-3xl border border-slate-700/60 bg-slate-950/90 px-4 py-3 text-slate-100">₹ {formatCurrency(total)}</div>
-          </div>
-          <div className="space-y-2 text-sm text-slate-200">
-            <span>Final Cost</span>
-            <div className="rounded-3xl border border-slate-700/60 bg-slate-950/90 px-4 py-3 text-slate-100">₹ {formatCurrency(finalCost)}</div>
           </div>
         </div>
         <div className="mt-6 flex flex-wrap items-center gap-4">
