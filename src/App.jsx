@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar.jsx';
+import MobileNav from './components/MobileNav.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import OcrUpload from './pages/OcrUpload.jsx';
 import Ledger from './pages/Ledger.jsx';
@@ -18,10 +19,11 @@ function App() {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(56,189,248,0.18),_transparent_25%),radial-gradient(circle_at_bottom_left,_rgba(59,130,246,0.12),_transparent_20%)] pointer-events-none" />
       <BrowserRouter>
-        <div className="relative z-10 flex min-h-screen">
+        <MobileNav />
+        <div className="relative z-10 flex min-h-screen pt-0 md:pt-0">
           <Sidebar />
-          <main className="flex-1 p-4 sm:p-6 lg:px-8">
-            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <main className="flex-1 p-4 sm:p-6 lg:px-8 md:pt-0 pt-20 pb-24 md:pb-0">
+            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between md:flex hidden">
               <div>
                 <p className="text-sm uppercase tracking-[0.3em] text-cyan-300/80">Prem Fruit Company</p>
                 <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-50">Ledger OCR System</h1>
