@@ -74,3 +74,13 @@ export const saveParsedLedgerEntries = (entries) => {
   }));
   saveLedgerEntries(normalized);
 };
+
+export const deleteLedgerEntries = (indices) => {
+  const existing = loadData(STORAGE_KEYS.ledger);
+  const updated = existing.filter((_, idx) => !indices.includes(idx));
+  saveData(STORAGE_KEYS.ledger, updated);
+};
+
+export const deleteAllLedgerEntries = () => {
+  saveData(STORAGE_KEYS.ledger, []);
+};

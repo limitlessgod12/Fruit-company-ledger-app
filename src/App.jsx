@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
 import Sidebar from './components/Sidebar.jsx';
 import MobileNav from './components/MobileNav.jsx';
 import Dashboard from './pages/Dashboard.jsx';
@@ -12,8 +13,21 @@ import { downloadLedgerCsv } from './utils/export.js';
 import { clearAllData, loadAllData } from './utils/storage.js';
 
 function App() {
+  const [clearConfirm, setClearConfirm] = useState(false);
   const { ledgerEntries } = loadAllData();
   const balance = ledgerEntries.reduce((sum, item) => sum + (item.credit - item.debit), 0);
+
+  const handleClearData = () => {
+    if (!clearConfirm) {
+      setClearConfirm(true);
+      return;
+    }
+    if (window.confirm('Are you absolutely sure? Click OK to clear ALL data permanently.')) {
+      clearAllData();
+      window.location.reload();
+    }
+    setClearConfirm(false);
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -38,15 +52,14 @@ function App() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    if (window.confirm('Clear all stored ledger data? This cannot be undone.')) {
-                      clearAllData();
-                      window.location.reload();
-                    }
-                  }}
-                  className="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-2 text-sm text-rose-100 transition hover:border-rose-400 hover:bg-rose-500/20 hover:text-white"
+                  onClick={handleClearData}
+                  className={`rounded-2xl border px-4 py-2 text-sm font-medium transition ${
+                    clearConfirm
+                      ? 'border-rose-400 bg-rose-600 text-white hover:bg-rose-500'
+                      : 'border-rose-500/20 bg-rose-500/10 text-rose-100 hover:border-rose-400 hover:bg-rose-500/20'
+                  }`}
                 >
-                  Clear All Data
+                  {clearConfirm ? 'Click again to confirm' : 'Clear All Data'}
                 </button>
               </div>
             </div>
